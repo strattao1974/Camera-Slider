@@ -1,0 +1,262 @@
+int Pin2 = 2; //Pin 1 cannot be used for this. Start at 2.
+int Pin3 = 3;
+int Pin4 = 4;
+int Pin5 = 5;
+int Pin8 = 8;
+int Pin9 = 9;
+
+int SliderLength = 1050; //Travel length in mm
+double TravelTime; //Used for calculations in the loop section.
+double Steps = 10695; //Steps required to move along the entire Rail.400 * (SliderLength / (3.14 * PulleyDiameter))
+double StepDelay;
+int StepsTaken = 0;
+
+bool s2;   ///s2 stands for switch2_status. It starts at 2 so we can match the pin.
+bool s3;
+bool s4;
+bool s5;
+
+
+const int stepPin = 8; //defines the step pin
+const int dirPin = 9; //defines the direction pin
+
+
+void setup()
+{
+  Serial.begin(9600); //Required for Serial Monitor
+  pinMode(Pin2, INPUT);
+  pinMode(Pin3, INPUT);
+  pinMode(Pin4, INPUT);
+  pinMode(Pin5, INPUT);
+
+  pinMode(stepPin, OUTPUT);
+  pinMode(dirPin, OUTPUT);
+  Serial.println("");
+  Serial.print("Steps = ");
+  Serial.println(Steps);
+  digitalWrite(dirPin, HIGH);  //Defines the direction of travel. LOW reverses it.
+}
+
+void MoveStepper()
+{
+  digitalWrite(stepPin, HIGH); //This moves the stepper by 1 step.
+  delayMicroseconds(400); //Depends on Motor 500-1000 is good
+  digitalWrite(stepPin, LOW);
+  delayMicroseconds(400);
+  StepsTaken++;
+}
+
+// the loop routine runs over and over again forever:
+void loop()
+{
+  s2 = digitalRead(Pin2);  ///This checks the status of the switches.
+  s3 = digitalRead(Pin3);
+  s4 = digitalRead(Pin4);
+  s5 = digitalRead(Pin5);
+
+
+  if ((s2 == LOW) && (s3 == HIGH) && (s4 == HIGH) && (s5 == HIGH)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+    { Serial.println("Mode = s2");
+      TravelTime = 10; //The slider will move the distance in x seconds.enter 5
+      StepDelay = ((TravelTime / Steps) - 0.0008)*1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay);
+      // THis is in miliseconds (ms) Not MICRO!
+
+    }
+  }
+
+
+  if ((s3 == LOW) && (s2 == HIGH) && (s4 == HIGH) && (s5 == HIGH)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+    { Serial.println("Mode = s3");
+      TravelTime = 20; //The slider will move the distance in x seconds.enter 5
+      StepDelay = ((TravelTime / Steps) - 0.0008)*1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay);
+      // THis is in miliseconds (ms) Not MICRO!
+
+    }
+  }
+  if ((s4 == LOW) && (s2 == HIGH) && (s3 == HIGH) && (s5 == HIGH)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+    { Serial.println("Mode = s4");
+      TravelTime = 30; //The slider will move the distance in x seconds.enter 5
+      StepDelay = ((TravelTime / Steps) - 0.0008)*1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay);
+      // THis is in miliseconds (ms) Not MICRO!
+
+    }
+  }
+  if ((s5 == LOW) && (s2 == HIGH) && (s3 == HIGH) && (s4 == HIGH)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+    { Serial.println("Mode = s5");
+      TravelTime = 60; //The slider will move the distance in x seconds.enter 5
+      StepDelay = ((TravelTime / Steps) - 0.0008)*1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay);
+      // THis is in miliseconds (ms) Not MICRO!
+
+    }
+  }
+  if ((s2 == LOW) && (s3 == LOW) && (s4 == HIGH) && (s5 == HIGH)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+   { Serial.println("Mode = s2,3");
+      TravelTime = 120; //The slider will move the distance in x seconds.enter 5
+      StepDelay = ((TravelTime / Steps) - 0.0008)*1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay);
+      // THis is in miliseconds (ms) Not MICRO!
+
+    }
+  }
+  if ((s2 == LOW) && (s4 == LOW) && (s3 == HIGH) && (s5 == HIGH)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+    { Serial.println("Mode = s2,4");
+      TravelTime = 300; //The slider will move the distance in x seconds.enter 5
+      StepDelay = ((TravelTime / Steps) - 0.0008)*1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay);
+      // THis is in miliseconds (ms) Not MICRO!
+
+    }
+
+  }
+  if ((s2 == LOW) && (s5 == LOW) && (s3 == HIGH) && (s4 == HIGH)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+    { Serial.println("Mode = s2,5");
+      TravelTime = 1200; //The slider will move the distance in 30s
+      StepDelay = ((TravelTime / Steps) - 0.002) * 1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay); // THis is in miliseconds (ms) Not MICRO!
+    }
+
+  }
+  if ((s3 == LOW) && (s4 == LOW) && (s2 == HIGH) && (s5 == HIGH)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+    { Serial.println("Mode = s3,4");
+      TravelTime = 1800; //The slider will move the distance in 30s
+      StepDelay = ((TravelTime / Steps) - 0.002) * 1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay); // THis is in miliseconds (ms) Not MICRO!
+    }
+
+  }
+  if ((s3 == LOW) && (s5 == LOW) && (s2 == HIGH) && (s4 == HIGH)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+    { Serial.println("Mode = s3,5");
+      TravelTime = 2400; //The slider will move the distance in 30s
+      StepDelay = ((TravelTime / Steps) - 0.002) * 1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay); // THis is in miliseconds (ms) Not MICRO!
+    }
+
+  }
+  if ((s4 == LOW) && (s5 == LOW) && (s2 == HIGH) && (s3 == HIGH)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+    { Serial.println("Mode = s4,5");
+      TravelTime = 3000; //The slider will move the distance in 30s
+      StepDelay = ((TravelTime / Steps) - 0.002) * 1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay); // THis is in miliseconds (ms) Not MICRO!
+    }
+
+  }
+  if ((s2 == LOW) && (s3 == LOW) && (s4 == LOW) && (s5 == HIGH)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+    { Serial.println("Mode = s2,3,4");
+      TravelTime = 3600; //The slider will move the distance in 30s
+      StepDelay = ((TravelTime / Steps) - 0.002) * 1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay); // THis is in miliseconds (ms) Not MICRO!
+    }
+
+  }
+  if ((s5 == LOW) && (s3 == LOW) && (s4 == LOW) && (s2 == HIGH)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+    { Serial.println("Mode = s3,4,5");
+      TravelTime = 5400; //The slider will move the distance in 30s
+      StepDelay = ((TravelTime / Steps) - 0.002) * 1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay); // THis is in miliseconds (ms) Not MICRO!
+    }
+
+  }
+  if ((s2 == LOW) && (s5 == LOW) && (s4 == LOW) && (s3 == HIGH)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+    { Serial.println("Mode = s2,4,5");
+      TravelTime = 14400; //The slider will move the distance in 30s
+      StepDelay = ((TravelTime / Steps) - 0.002) * 1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay); // THis is in miliseconds (ms) Not MICRO!
+    }
+
+  }
+  if ((s2 == LOW) && (s3 == LOW) && (s5 == LOW) && (s4 == HIGH)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+    { Serial.println("Mode = s2,3,5");
+      TravelTime = 28800; //The slider will move the distance in 30s
+      StepDelay = ((TravelTime / Steps) - 0.002) * 1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay); // THis is in miliseconds (ms) Not MICRO!
+    }
+
+  }
+  if ((s2 == LOW) && (s3 == LOW) && (s4 == LOW) & (s5 == LOW)) ///LOW means switch is pressed/closed/conductive.
+  {
+    if (StepsTaken < Steps)
+    { Serial.println("Mode = s2,3,4,5");
+      TravelTime = 10; //The slider will move the distance in 30s
+      StepDelay = ((TravelTime / Steps) - 0.002) * 1000; //This calculates the delay required in ms between steps to make the journey in the desired amount of time. 0.001 Seconds are deducted because the MoveStepper Method includes 2x 500microseconds delays.
+      MoveStepper();
+      Serial.print("Stepdelay = ");
+      Serial.println(StepDelay);
+      delay (StepDelay); // THis is in miliseconds (ms) Not MICRO!
+    }
+
+  }
+}
